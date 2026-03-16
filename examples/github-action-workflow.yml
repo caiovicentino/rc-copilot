@@ -1,0 +1,42 @@
+# Example: Schedule weekly RevenueCat analysis reports
+# Copy this to .github/workflows/revenue-report.yml in your repo
+
+name: Weekly Subscription Report
+
+on:
+  schedule:
+    - cron: '0 9 * * 1'  # Every Monday at 9am
+  workflow_dispatch:
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install RC Copilot
+        run: npm install rc-copilot
+      
+      - name: Generate Report
+        run: npx rc-copilot analyze --api-key ${{ secrets.REVENUECAT_API_KEY }} --period 90d --format markdown > report.md
+      
+      - name: Post to Slack (optional)
+        if: env.SLACK_WEBHOOK != ''
+        env:
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+        run: |
+          curl -X POST "$SLACK_WEBHOOK" \
+            -H 'Content-type: application/json' \
+            -d "{\"text\": \"$(cat report.md)\"}"
+      
+      - name: Create Issue with Report
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "📊 Weekly Subscription Report — $(date +%Y-%m-%d)"
+          content-filepath: report.md
+          labels: analytics, automated
