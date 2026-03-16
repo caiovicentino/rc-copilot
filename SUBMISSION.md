@@ -45,10 +45,12 @@ I built **RC Copilot** — an autonomous AI agent that connects to RevenueCat's 
 
 → **[Full Dark Noise Analysis Report](https://github.com/caiovicentino/rc-copilot/blob/main/examples/dark-noise-analysis.md)**
 
-#### Live Web Dashboard (Bonus)
-🔗 **[rc-copilot.vercel.app](https://rc-copilot.vercel.app)**
+#### Live Web Dashboard + AI Copilot
+🔗 **[web-five-lovat-52.vercel.app](https://web-five-lovat-52.vercel.app)**
 
-A full web dashboard that lets you explore RC Copilot's analysis without installing anything:
+A full web experience that lets you explore RC Copilot's analysis without installing anything:
+
+**📊 Dashboard** ([/dashboard](https://web-five-lovat-52.vercel.app/dashboard))
 - **Real-time metrics** from the RevenueCat Charts API (server-side — API key never touches the browser)
 - **Interactive What-If Simulator** — drag sliders to model churn reduction, trial improvement, and growth scenarios
 - **Anomaly alerts** with severity indicators and statistical context
@@ -56,9 +58,16 @@ A full web dashboard that lets you explore RC Copilot's analysis without install
 - **Health Score** — composite gauge based on churn, conversion, and revenue trends vs industry benchmarks
 - **Executive Summary** with actionable recommendations
 
-Built with Next.js 15, Tailwind CSS, and Recharts. Dark theme. Responsive. Zero friction.
+**🧠 AI Copilot** ([/copilot](https://web-five-lovat-52.vercel.app/copilot))
+- **Ask your data anything** — natural language chat powered by GPT-4o-mini
+- All RevenueCat data (metrics, charts, anomalies, trends) injected as real-time context
+- Streaming responses with Markdown rendering (tables, code blocks, lists)
+- 5 suggested questions to get started ("Why did revenue drop in February?", "What should I focus on?")
+- Full multi-turn conversation support
 
-**Why this matters:** The best developer tool demo is one that requires no setup. Open the URL, see real data, play with the simulator. That's the experience a developer advocate should deliver.
+**Why AI Copilot matters:** Dashboards show data. Copilots explain it. Instead of reading charts, you ask *"What caused the December spike?"* and get a grounded, data-backed answer. This is where developer tools are heading — and Charts API makes it possible.
+
+Built with Next.js 15, Tailwind CSS, Recharts, and OpenAI streaming. Dark theme. Responsive. Zero friction.
 
 ---
 
@@ -153,16 +162,18 @@ This entire assignment was completed by **Major**, my AI agent built on OpenClaw
 
 | Metric | Value |
 |--------|-------|
-| Lines of Code | 1,500+ CLI + 2,000+ Web Dashboard (TypeScript) |
+| Lines of Code | 1,500+ CLI + 2,800+ Web Dashboard + AI Copilot (TypeScript) |
 | Production Dependencies | 0 (CLI), minimal (web: Next.js + Recharts) |
 | Charts Analyzed | 10 types |
 | API Endpoints Used | 3 (projects, overview, charts) |
 | Anomalies Detected | 10+ in Dark Noise data |
+| AI Copilot | Natural language chat with real-time data context |
 | Report Sections | 5 (Summary, Metrics, Anomalies, Insights, What-If) |
 | Blog Post Words | 2,400+ |
 | Social Posts | 5 (different angles) |
 | Communities Targeted | 5 |
-| Time to Complete | ~4 hours of agent work |
+| Tests | 57 passing (36 analyzer + 13 API routes + 8 copilot) |
+| Time to Complete | ~6 hours of agent work |
 
 ---
 
