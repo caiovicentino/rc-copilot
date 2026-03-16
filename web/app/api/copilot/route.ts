@@ -150,10 +150,10 @@ export async function POST(request: Request) {
     });
   }
 
-  // Use OpenAI GPT-4o for high-quality analysis
-  const openaiKey = process.env.OPENAI_API_KEY;
-  if (!openaiKey) {
-    return new Response(JSON.stringify({ error: "OpenAI API key not configured" }), {
+  // Use Claude Sonnet 4.6 via OpenRouter for top-tier analysis
+  const routerKey = process.env.OPENROUTER_API_KEY;
+  if (!routerKey) {
+    return new Response(JSON.stringify({ error: "OpenRouter API key not configured" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
@@ -162,30 +162,32 @@ export async function POST(request: Request) {
   const dataContext = await getDataContext();
   const systemPrompt = buildSystemPrompt(dataContext);
 
-  const openaiMessages = [
+  const llmMessages = [
     { role: "system", content: systemPrompt },
     ...body.messages.map((m) => ({ role: m.role, content: m.content })),
   ];
 
   let openaiResponse: Response;
   try {
-    openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
+    openaiResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${openaiKey}`,
+        Authorization: `Bearer ${routerKey}`,
+        "HTTP-Referer": "https://rc-copilot.vercel.app",
+        "X-Title": "RC Copilot",
       },
       body: JSON.stringify({
-        model: "gpt-4o",
-        messages: openaiMessages,
+        model: "anthropic/claude-sonnet-4-6",
+        messages: llmMessages,
         stream: true,
         temperature: 0.7,
         max_tokens: 2048,
       }),
     });
   } catch (err) {
-    console.error("OpenAI API request failed:", err);
-    return new Response(JSON.stringify({ error: "Failed to reach OpenAI API" }), {
+    console.error("OpenRouter API request failed:", err);
+    return new Response(JSON.stringify({ error: "Failed to reach LLM API" }), {
       status: 502,
       headers: { "Content-Type": "application/json" },
     });
@@ -193,8 +195,8 @@ export async function POST(request: Request) {
 
   if (!openaiResponse.ok) {
     const errorText = await openaiResponse.text().catch(() => "Unknown error");
-    console.error("OpenAI API error:", openaiResponse.status, errorText);
-    return new Response(JSON.stringify({ error: "OpenAI API error", details: errorText }), {
+    console.error("OpenRouter API error:", openaiResponse.status, errorText);
+    return new Response(JSON.stringify({ error: "LLM API error", details: errorText }), {
       status: 502,
       headers: { "Content-Type": "application/json" },
     });
