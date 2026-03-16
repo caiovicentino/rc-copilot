@@ -150,10 +150,10 @@ export async function POST(request: Request) {
     });
   }
 
-  // Use OpenRouter with Claude Sonnet 4 for best quality
-  const openrouterKey = process.env.OPENROUTER_API_KEY;
-  if (!openrouterKey) {
-    return new Response(JSON.stringify({ error: "OpenRouter API key not configured" }), {
+  // Use OpenAI GPT-4o for high-quality analysis
+  const openaiKey = process.env.OPENAI_API_KEY;
+  if (!openaiKey) {
+    return new Response(JSON.stringify({ error: "OpenAI API key not configured" }), {
       status: 500,
       headers: { "Content-Type": "application/json" },
     });
@@ -169,16 +169,14 @@ export async function POST(request: Request) {
 
   let openaiResponse: Response;
   try {
-    openaiResponse = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+    openaiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${openrouterKey}`,
-        "HTTP-Referer": "https://rc-copilot.vercel.app",
-        "X-Title": "RC Copilot",
+        Authorization: `Bearer ${openaiKey}`,
       },
       body: JSON.stringify({
-        model: "anthropic/claude-sonnet-4-6",
+        model: "gpt-4o",
         messages: openaiMessages,
         stream: true,
         temperature: 0.7,
@@ -186,8 +184,8 @@ export async function POST(request: Request) {
       }),
     });
   } catch (err) {
-    console.error("OpenRouter API request failed:", err);
-    return new Response(JSON.stringify({ error: "Failed to reach OpenRouter API" }), {
+    console.error("OpenAI API request failed:", err);
+    return new Response(JSON.stringify({ error: "Failed to reach OpenAI API" }), {
       status: 502,
       headers: { "Content-Type": "application/json" },
     });
@@ -195,8 +193,8 @@ export async function POST(request: Request) {
 
   if (!openaiResponse.ok) {
     const errorText = await openaiResponse.text().catch(() => "Unknown error");
-    console.error("OpenRouter API error:", openaiResponse.status, errorText);
-    return new Response(JSON.stringify({ error: "OpenRouter API error", details: errorText }), {
+    console.error("OpenAI API error:", openaiResponse.status, errorText);
+    return new Response(JSON.stringify({ error: "OpenAI API error", details: errorText }), {
       status: 502,
       headers: { "Content-Type": "application/json" },
     });
