@@ -100,9 +100,34 @@ The code is open source. The insights are real.
 
 ---
 
+---
+
+## Bonus Post 6 — Live Dashboard
+**Angle:** Zero-friction demo, visual proof
+
+**Copy:**
+Don't want to install anything? Just open the link.
+
+RC Copilot now has a live web dashboard:
+- Real-time data from @RevenueCat Charts API
+- Interactive What-If simulator (drag sliders, see impact)
+- Anomaly detection with visual highlights
+- Health score at a glance
+
+No signup. No install. Just open and explore.
+
+🔗 [link to live dashboard]
+
+Built with Next.js, deployed on Vercel. API key never touches your browser.
+
+**Media:** Screenshot of the dashboard showing metrics + charts + What-If simulator
+
+---
+
 ## Media Assets Required
 1. **Report screenshot** — render the markdown report in GitHub dark mode, screenshot
 2. **Architecture diagram** — render the mermaid diagram, export as PNG
 3. **Findings table** — clean visualization of the 4 key findings
 4. **YAML screenshot** — GitHub Action config, syntax highlighted
 5. **Terminal GIF** — screen recording of RC Copilot running and generating output
+6. **Dashboard screenshot** — live web dashboard with real data, dark theme

@@ -45,6 +45,21 @@ I built **RC Copilot** — an autonomous AI agent that connects to RevenueCat's 
 
 → **[Full Dark Noise Analysis Report](https://github.com/caiovicentino/rc-copilot/blob/main/examples/dark-noise-analysis.md)**
 
+#### Live Web Dashboard (Bonus)
+🔗 **[rc-copilot.vercel.app](https://rc-copilot.vercel.app)**
+
+A full web dashboard that lets you explore RC Copilot's analysis without installing anything:
+- **Real-time metrics** from the RevenueCat Charts API (server-side — API key never touches the browser)
+- **Interactive What-If Simulator** — drag sliders to model churn reduction, trial improvement, and growth scenarios
+- **Anomaly alerts** with severity indicators and statistical context
+- **Trend charts** (Recharts) for revenue, MRR, churn, trials, and conversion over time
+- **Health Score** — composite gauge based on churn, conversion, and revenue trends vs industry benchmarks
+- **Executive Summary** with actionable recommendations
+
+Built with Next.js 15, Tailwind CSS, and Recharts. Dark theme. Responsive. Zero friction.
+
+**Why this matters:** The best developer tool demo is one that requires no setup. Open the URL, see real data, play with the simulator. That's the experience a developer advocate should deliver.
+
 ---
 
 ### Task 2: Content Package
@@ -61,9 +76,9 @@ Includes: code snippets, Mermaid architecture diagram, real data examples, CTA t
 #### Video Tutorial
 **"RC Copilot: Autonomous Subscription Analytics in 2 Minutes"**
 
-🔗 **[Watch the demo](https://github.com/caiovicentino/rc-copilot/blob/main/content/video-demo.md)** *(screen recording of the tool running against real Dark Noise data)*
+🔗 **[Watch the demo](https://github.com/caiovicentino/rc-copilot/releases/download/v1.0.0/demo.mp4)** *(narrated walkthrough of the tool running against real Dark Noise data)*
 
-Shows: setup → execution → report generation → key insights — all in under 3 minutes.
+Shows: install → overview → What-If simulator → full analysis → GitHub Action — all in 1 minute 20 seconds.
 
 #### 5 Social Media Posts (X/Twitter)
 
@@ -138,8 +153,8 @@ This entire assignment was completed by **Major**, my AI agent built on OpenClaw
 
 | Metric | Value |
 |--------|-------|
-| Lines of Code | 1,503 (TypeScript) |
-| Production Dependencies | 0 |
+| Lines of Code | 1,500+ CLI + 2,000+ Web Dashboard (TypeScript) |
+| Production Dependencies | 0 (CLI), minimal (web: Next.js + Recharts) |
 | Charts Analyzed | 10 types |
 | API Endpoints Used | 3 (projects, overview, charts) |
 | Anomalies Detected | 10+ in Dark Noise data |

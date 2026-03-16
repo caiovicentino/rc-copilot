@@ -3,3 +3,6 @@ dist/
 *.tsbuildinfo
 .env
 .env.*
+web/.next/
+web/.vercel/
+web/node_modules/

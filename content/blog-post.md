@@ -161,22 +161,33 @@ const report = await copilot.analyze({ period: '90d' });
 console.log(report.markdown);
 ```
 
+## The Live Dashboard: See It Without Installing Anything
+
+I also built a **web dashboard** so you can see RC Copilot in action without cloning a repo or running any commands. Visit the live demo and you'll see real Dark Noise data flowing through the analyzer in real time — anomalies highlighted, trends charted, and the interactive What-If simulator ready to play with.
+
+The dashboard is a Next.js app deployed on Vercel. It calls the RevenueCat Charts API server-side (the API key never touches the browser), runs the same analysis engine as the CLI, and renders everything with Recharts. The What-If simulator runs entirely client-side — drag the sliders and watch projected MRR update instantly.
+
+**→ [Try the live dashboard](https://rc-copilot.vercel.app/dashboard)**
+
+This matters because the best developer tool demo is one that requires zero friction. No `npm install`, no environment variables, no "clone this repo and run these 4 commands." Just open a URL and see value immediately.
+
 ## Why the Charts API Changes Everything
 
-Before the Charts API, getting this kind of analysis required:
-1. Manually exporting CSVs from the RevenueCat dashboard
-2. Loading them into a spreadsheet or BI tool
-3. Writing formulas or queries
-4. Hoping you didn't make a calculation error
-5. Repeating every week
+Before the Charts API, getting this kind of programmatic analysis required painful workarounds:
+1. Manually exporting CSVs from the RevenueCat dashboard every week
+2. Loading them into a spreadsheet, BI tool, or custom data pipeline
+3. Writing formulas or queries to detect patterns and outliers
+4. Hoping you didn't make a calculation error that invalidates your conclusions
+5. Repeating the entire tedious process every single week
 
-Now, with programmatic access to 21 chart types, the entire pipeline can be automated. RC Copilot is just one example — imagine:
-- **Investor update generators** that pull real metrics into your monthly report
-- **Pricing experiment analyzers** that compare conversion before/after changes
-- **Churn prediction models** trained on your actual subscription data
-- **Cross-app benchmarking tools** that compare metrics across your portfolio
+Now, with direct programmatic access to 21 distinct chart types through a clean REST API, the entire analytics pipeline can be fully automated. RC Copilot is just the first example of what becomes possible — imagine the ecosystem of tools developers could build:
+- **Investor update generators** that automatically pull real metrics into your monthly board report
+- **Pricing experiment analyzers** that compare conversion rates before and after pricing changes
+- **Churn prediction models** trained on your actual historical subscription data
+- **Cross-app benchmarking tools** that compare performance metrics across your entire app portfolio
+- **Slack bots** that alert your team the moment an anomaly is detected — before it becomes a crisis
 
-The Charts API is the foundation. The tools we build on top of it are what create real value.
+The Charts API is the foundational infrastructure layer. The creative tools we build on top of it are what transform raw subscription data into genuine competitive advantage.
 
 ## Technical Deep Dive: The Analyzer
 
