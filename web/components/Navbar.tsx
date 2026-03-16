@@ -29,6 +29,12 @@ export default function Navbar() {
             >
               <span>AI Copilot</span>
             </Link>
+            <Link
+              href="/skill"
+              className={`text-sm transition-colors flex items-center gap-1.5 ${pathname === "/skill" ? "text-amber-400 font-medium" : "text-slate-400 hover:text-slate-100"}`}
+            >
+              <span>AgentSkill</span>
+            </Link>
             <a
               href="https://github.com/caiovicentino/rc-copilot"
               target="_blank"

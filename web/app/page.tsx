@@ -31,6 +31,14 @@ const features = [
     icon: "⚡",
     color: "bg-blue-500/20 text-blue-400",
   },
+  {
+    title: "AgentSkill",
+    description:
+      "Drop-in skill that lets any AI agent analyze RevenueCat data autonomously. Zero dependencies, 434 lines, 117 tests with 100% coverage.",
+    icon: "🤖",
+    color: "bg-amber-500/20 text-amber-400",
+    href: "/skill",
+  },
 ];
 
 export default function Home() {
