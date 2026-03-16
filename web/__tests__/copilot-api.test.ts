@@ -30,7 +30,7 @@ function makeChartResponse(name: string, unit: string) {
   };
 }
 
-// ─── OpenAI mock streaming response ─────────────────────────────────────────
+// ─── LLM mock streaming response ─────────────────────────────────────────
 
 function makeOpenAIStreamResponse(text: string) {
   const chunks = text.split("").map((char) =>
@@ -60,8 +60,8 @@ function setupFetchMock(options: { openaiResponse?: Response; openaiError?: bool
   const mockFn = vi.fn(async (url: string | URL | Request, init?: RequestInit) => {
     const urlStr = typeof url === "string" ? url : url instanceof URL ? url.toString() : url.url;
 
-    // OpenAI API
-    if (urlStr.includes("api.openai.com")) {
+    // LLM API (OpenRouter)
+    if (urlStr.includes("openrouter.ai")) {
       if (options.openaiError) {
         return new Response("Internal Server Error", { status: 500 });
       }
@@ -114,7 +114,7 @@ describe("API Route: /api/copilot", () => {
 
   it("returns 405 for GET requests", async () => {
     vi.stubEnv("REVENUECAT_API_KEY", "sk_test_key");
-    vi.stubEnv("OPENAI_API_KEY", "sk-test-openai");
+    vi.stubEnv("OPENROUTER_API_KEY", "sk-test-openrouter");
 
     const { POST } = await import("@/app/api/copilot/route");
 
@@ -126,7 +126,7 @@ describe("API Route: /api/copilot", () => {
 
   it("returns 400 for empty messages", async () => {
     vi.stubEnv("REVENUECAT_API_KEY", "sk_test_key");
-    vi.stubEnv("OPENAI_API_KEY", "sk-test-openai");
+    vi.stubEnv("OPENROUTER_API_KEY", "sk-test-openrouter");
     setupFetchMock();
 
     const { POST } = await import("@/app/api/copilot/route");
@@ -146,7 +146,7 @@ describe("API Route: /api/copilot", () => {
 
   it("returns 400 for missing messages field", async () => {
     vi.stubEnv("REVENUECAT_API_KEY", "sk_test_key");
-    vi.stubEnv("OPENAI_API_KEY", "sk-test-openai");
+    vi.stubEnv("OPENROUTER_API_KEY", "sk-test-openrouter");
     setupFetchMock();
 
     const { POST } = await import("@/app/api/copilot/route");
@@ -163,7 +163,7 @@ describe("API Route: /api/copilot", () => {
 
   it("returns streaming response for valid request", async () => {
     vi.stubEnv("REVENUECAT_API_KEY", "sk_test_key");
-    vi.stubEnv("OPENAI_API_KEY", "sk-test-openai");
+    vi.stubEnv("OPENROUTER_API_KEY", "sk-test-openrouter");
     setupFetchMock();
 
     const { POST } = await import("@/app/api/copilot/route");
@@ -187,7 +187,7 @@ describe("API Route: /api/copilot", () => {
 
   it("system prompt includes real data context", async () => {
     vi.stubEnv("REVENUECAT_API_KEY", "sk_test_key");
-    vi.stubEnv("OPENAI_API_KEY", "sk-test-openai");
+    vi.stubEnv("OPENROUTER_API_KEY", "sk-test-openrouter");
 
     const fetchMock = setupFetchMock();
 
@@ -203,11 +203,11 @@ describe("API Route: /api/copilot", () => {
 
     await POST(request);
 
-    // Find the OpenAI call
+    // Find the OpenRouter call
     const openaiCall = fetchMock.mock.calls.find(
       (call: unknown[]) => {
         const url = typeof call[0] === "string" ? call[0] : "";
-        return url.includes("api.openai.com");
+        return url.includes("openrouter.ai");
       }
     );
 
@@ -223,9 +223,9 @@ describe("API Route: /api/copilot", () => {
     expect(systemMessage.content).toContain("Industry Benchmarks");
   });
 
-  it("handles OpenAI API errors gracefully", async () => {
+  it("handles OpenRouter API errors gracefully", async () => {
     vi.stubEnv("REVENUECAT_API_KEY", "sk_test_key");
-    vi.stubEnv("OPENAI_API_KEY", "sk-test-openai");
+    vi.stubEnv("OPENROUTER_API_KEY", "sk-test-openrouter");
     setupFetchMock({ openaiError: true });
 
     const { POST } = await import("@/app/api/copilot/route");
@@ -242,12 +242,12 @@ describe("API Route: /api/copilot", () => {
     expect(response.status).toBe(502);
 
     const data = await response.json();
-    expect(data.error).toContain("OpenAI");
+    expect(data.error).toContain("OpenRouter");
   });
 
   it("returns 500 when OpenAI API key is missing", async () => {
     vi.stubEnv("REVENUECAT_API_KEY", "sk_test_key");
-    vi.stubEnv("OPENAI_API_KEY", "");
+    vi.stubEnv("OPENROUTER_API_KEY", "");
     setupFetchMock();
 
     const { POST } = await import("@/app/api/copilot/route");
@@ -264,12 +264,12 @@ describe("API Route: /api/copilot", () => {
     expect(response.status).toBe(500);
 
     const data = await response.json();
-    expect(data.error).toContain("OpenAI");
+    expect(data.error).toContain("OpenRouter");
   });
 
-  it("sends full message history to OpenAI for multi-turn conversation", async () => {
+  it("sends full message history to OpenRouter for multi-turn conversation", async () => {
     vi.stubEnv("REVENUECAT_API_KEY", "sk_test_key");
-    vi.stubEnv("OPENAI_API_KEY", "sk-test-openai");
+    vi.stubEnv("OPENROUTER_API_KEY", "sk-test-openrouter");
 
     const fetchMock = setupFetchMock();
 
@@ -292,7 +292,7 @@ describe("API Route: /api/copilot", () => {
     const openaiCall = fetchMock.mock.calls.find(
       (call: unknown[]) => {
         const url = typeof call[0] === "string" ? call[0] : "";
-        return url.includes("api.openai.com");
+        return url.includes("openrouter.ai");
       }
     );
 
