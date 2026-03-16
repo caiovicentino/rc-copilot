@@ -431,4 +431,26 @@ async function main() {
   process.exit(1);
 }
 
-main().catch(e => { console.error(`❌ ${e.message}`); process.exit(1); });
+// ─── Exports (for testing) ───────────────────────────────────────────────────
+
+export {
+  RevenueCatAPI, mean, stddev, pctChange, fmtNum, findPrimaryMeasure,
+  extractTimeSeries, detectTrend, detectAnomalies, generateInsights,
+  simChurnReduction, simTrialImprovement, simGrowth, trendArrow,
+  formatOverviewMarkdown, formatAnalysisMarkdown, parsePeriod, main,
+  CORE_CHARTS, BASE_URL,
+};
+export type {
+  Project, ChartResponse, ChartMeasure, ChartValue, ChartSummary,
+  OverviewMetric, OverviewResponse, TimeSeries, TrendResult, Anomaly,
+  Insight, MetricSnapshot, WhatIfScenario, SimInput, OutputFormat, Period,
+  TrendDirection, Severity, ChartName,
+};
+
+// ─── Run CLI when executed directly ──────────────────────────────────────────
+
+/* v8 ignore next 4 — CLI entrypoint only runs when executed directly, not when imported for tests */
+const isDirectRun = process.argv[1]?.endsWith('rc-analyze.ts') || process.argv[1]?.includes('rc-analyze');
+if (isDirectRun) {
+  main().catch(e => { console.error(`❌ ${e.message}`); process.exit(1); });
+}
