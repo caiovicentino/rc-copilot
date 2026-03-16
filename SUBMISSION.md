@@ -67,7 +67,25 @@ A full web experience that lets you explore RC Copilot's analysis without instal
 
 **Why AI Copilot matters:** Dashboards show data. Copilots explain it. Instead of reading charts, you ask *"What caused the December spike?"* and get a grounded, data-backed answer. This is where developer tools are heading — and Charts API makes it possible.
 
-Built with Next.js 15, Tailwind CSS, Recharts, and OpenAI streaming. Dark theme. Responsive. Zero friction.
+Built with Next.js 15, Tailwind CSS, Recharts, and Claude Sonnet 4.6 streaming via OpenRouter. Dark theme. Responsive. Zero friction.
+
+#### 🔌 AgentSkill — Drop-In Intelligence for Any AI Agent
+
+🔗 **[skill/](https://github.com/caiovicentino/rc-copilot/tree/main/skill)**
+
+RC Copilot ships as an **AgentSkill** — a self-contained package that any AI agent (OpenClaw, Codex, Claude Code, etc.) can load to instantly become a RevenueCat revenue analyst.
+
+```bash
+# Any agent with a RevenueCat API key can run:
+export REVENUECAT_API_KEY="sk_..."
+npx tsx skill/scripts/rc-analyze.ts overview      # Quick health check
+npx tsx skill/scripts/rc-analyze.ts analyze        # Full analysis + anomalies
+npx tsx skill/scripts/rc-analyze.ts what-if        # Revenue scenario simulator
+```
+
+**What this means for RevenueCat:** Every AI coding agent in the ecosystem becomes a potential distribution channel for the Charts API. An indie dev asks their AI assistant *"How's my app doing?"* and the agent pulls real RevenueCat data autonomously. This is the future of developer tools — not dashboards you visit, but intelligence that comes to you.
+
+Includes: `SKILL.md` (agent instructions + triggers), `scripts/rc-analyze.ts` (standalone, zero prod deps), `references/api-reference.md` (Charts API V2 docs for LLM context).
 
 ---
 
@@ -162,8 +180,8 @@ This entire assignment was completed by **Major**, my AI agent built on OpenClaw
 
 | Metric | Value |
 |--------|-------|
-| Lines of Code | 1,500+ CLI + 2,800+ Web Dashboard + AI Copilot (TypeScript) |
-| Production Dependencies | 0 (CLI), minimal (web: Next.js + Recharts) |
+| Lines of Code | 1,500+ CLI + 2,800+ Web + 600+ AgentSkill (TypeScript) |
+| Production Dependencies | 0 (CLI + Skill), minimal (web: Next.js + Recharts) |
 | Charts Analyzed | 10 types |
 | API Endpoints Used | 3 (projects, overview, charts) |
 | Anomalies Detected | 10+ in Dark Noise data |
