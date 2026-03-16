@@ -1,0 +1,63 @@
+name: 'RC Copilot'
+description: 'Autonomous AI agent that analyzes RevenueCat subscription data and generates actionable insights'
+author: 'Caio Vicentino'
+
+branding:
+  icon: 'bar-chart-2'
+  color: 'green'
+
+inputs:
+  api-key:
+    description: 'RevenueCat API key with Charts read access'
+    required: true
+  period:
+    description: 'Analysis period (7d, 14d, 28d, 30d, 60d, 90d, 180d, 365d)'
+    required: false
+    default: '90d'
+  format:
+    description: 'Output format (markdown or json)'
+    required: false
+    default: 'markdown'
+  slack-webhook:
+    description: 'Slack webhook URL to post the report'
+    required: false
+
+outputs:
+  report:
+    description: 'Generated report content'
+  report-file:
+    description: 'Path to the generated report file'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install dependencies
+      shell: bash
+      run: |
+        cd ${{ github.action_path }}
+        npm ci
+
+    - name: Run analysis
+      id: analyze
+      shell: bash
+      env:
+        REVENUECAT_API_KEY: ${{ inputs.api-key }}
+      run: |
+        cd ${{ github.action_path }}
+        REPORT=$(npx tsx src/cli.ts analyze --api-key "$REVENUECAT_API_KEY" --period ${{ inputs.period }} --format ${{ inputs.format }})
+        echo "$REPORT" > rc-copilot-report.${{ inputs.format == 'json' && 'json' || 'md' }}
+        echo "report-file=rc-copilot-report.${{ inputs.format == 'json' && 'json' || 'md' }}" >> $GITHUB_OUTPUT
+
+    - name: Post to Slack
+      if: inputs.slack-webhook != ''
+      shell: bash
+      run: |
+        REPORT=$(cat rc-copilot-report.md)
+        curl -X POST -H 'Content-type: application/json' \
+          --data "{\"text\": \"$REPORT\"}" \
+          ${{ inputs.slack-webhook }}

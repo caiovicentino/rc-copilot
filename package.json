@@ -1,0 +1,37 @@
+{
+  "name": "rc-copilot",
+  "version": "1.0.0",
+  "description": "Autonomous AI agent that analyzes RevenueCat subscription data and generates actionable insights",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "rc-copilot": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "tsx src/cli.ts",
+    "analyze": "tsx src/cli.ts analyze",
+    "overview": "tsx src/cli.ts overview",
+    "what-if": "tsx src/cli.ts what-if",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "keywords": [
+    "revenuecat",
+    "subscriptions",
+    "analytics",
+    "revenue",
+    "churn",
+    "mrr",
+    "saas-metrics",
+    "github-action"
+  ],
+  "author": "Caio Vicentino",
+  "license": "MIT",
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}
