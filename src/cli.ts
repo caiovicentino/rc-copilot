@@ -9,7 +9,7 @@ import { CORE_CHARTS } from './types.js';
 
 // ─── Argument Parsing ────────────────────────────────────────────────────────
 
-function parseArgs(argv: string[]): { command: string; options: Record<string, string> } {
+export function parseArgs(argv: string[]): { command: string; options: Record<string, string> } {
   const args = argv.slice(2);
   const command = args[0] || 'analyze';
   const options: Record<string, string> = {};
@@ -26,7 +26,7 @@ function parseArgs(argv: string[]): { command: string; options: Record<string, s
   return { command, options };
 }
 
-function getDateRange(period: Period): { startDate: string; endDate: string } {
+export function getDateRange(period: Period): { startDate: string; endDate: string } {
   const days = parseInt(period.replace('d', ''), 10);
   const end = new Date();
   const start = new Date();
@@ -40,7 +40,7 @@ function getDateRange(period: Period): { startDate: string; endDate: string } {
 
 // ─── Commands ────────────────────────────────────────────────────────────────
 
-async function cmdAnalyze(apiKey: string, period: Period, format: string): Promise<string> {
+export async function cmdAnalyze(apiKey: string, period: Period, format: string): Promise<string> {
   const api = new RevenueCatAPI(apiKey);
 
   console.error('🔍 Discovering project...');
@@ -74,7 +74,7 @@ async function cmdAnalyze(apiKey: string, period: Period, format: string): Promi
   return report.markdown;
 }
 
-async function cmdOverview(apiKey: string): Promise<string> {
+export async function cmdOverview(apiKey: string): Promise<string> {
   const api = new RevenueCatAPI(apiKey);
 
   console.error('🔍 Discovering project...');
@@ -104,7 +104,7 @@ async function cmdOverview(apiKey: string): Promise<string> {
   return lines.join('\n');
 }
 
-async function cmdWhatIf(
+export async function cmdWhatIf(
   apiKey: string,
   period: Period,
   options: Record<string, string>
@@ -178,7 +178,7 @@ async function cmdWhatIf(
 
 // ─── Simulator Input Builder ─────────────────────────────────────────────────
 
-function buildSimulatorInput(analysis: import('./types.js').AnalysisResult): SimulatorInput {
+export function buildSimulatorInput(analysis: import('./types.js').AnalysisResult): SimulatorInput {
   let currentMRR = 4500;
   let currentChurnRate = 7;
   let currentTrialConversion = 41;
@@ -244,7 +244,7 @@ function buildSimulatorInput(analysis: import('./types.js').AnalysisResult): Sim
 
 // ─── Help ────────────────────────────────────────────────────────────────────
 
-function printHelp(): void {
+export function printHelp(): void {
   console.log(`
 RC Copilot — RevenueCat AI Analyst
 
@@ -276,7 +276,7 @@ EXAMPLES:
 
 // ─── Main ────────────────────────────────────────────────────────────────────
 
-async function main(): Promise<void> {
+export async function main(): Promise<void> {
   const { command, options } = parseArgs(process.argv);
 
   if (command === 'help' || command === '--help' || command === '-h') {
@@ -321,4 +321,7 @@ async function main(): Promise<void> {
   }
 }
 
-main();
+// Only run main when executed directly
+if (import.meta.url === `file://${process.argv[1]}`) {
+  main();
+}

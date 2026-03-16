@@ -8,15 +8,24 @@ import type {
 
 const BASE_URL = 'https://api.revenuecat.com/v2';
 
+export interface RevenueCatAPIOptions {
+  minRequestInterval?: number;
+  retryDelayMs?: number;
+}
+
 export class RevenueCatAPI {
   private apiKey: string;
   private projectId: string | null = null;
   private projectName: string | null = null;
   private requestCount = 0;
   private lastRequestTime = 0;
+  private minRequestInterval: number;
+  private retryDelayMs: number;
 
-  constructor(apiKey: string) {
+  constructor(apiKey: string, options: RevenueCatAPIOptions = {}) {
     this.apiKey = apiKey;
+    this.minRequestInterval = options.minRequestInterval ?? 500;
+    this.retryDelayMs = options.retryDelayMs ?? 2000;
   }
 
   // ─── Rate Limiting ──────────────────────────────────────────────────────
@@ -24,9 +33,9 @@ export class RevenueCatAPI {
   private async throttle(): Promise<void> {
     const now = Date.now();
     const elapsed = now - this.lastRequestTime;
-    // Keep under 120 requests/min — wait at least 500ms between requests
-    if (elapsed < 500) {
-      await new Promise((resolve) => setTimeout(resolve, 500 - elapsed));
+    // Keep under 120 requests/min — wait at least minRequestInterval ms between requests
+    if (elapsed < this.minRequestInterval) {
+      await new Promise((resolve) => setTimeout(resolve, this.minRequestInterval - elapsed));
     }
     this.lastRequestTime = Date.now();
     this.requestCount++;
@@ -52,7 +61,7 @@ export class RevenueCatAPI {
       }
 
       if (response.status === 429) {
-        const retryAfter = parseInt(response.headers.get('retry-after') || '5', 10);
+        const retryAfter = parseInt(response.headers.get('retry-after') || '0', 10);
         console.error(`  ⏳ Rate limited. Retrying in ${retryAfter}s... (attempt ${attempt}/${retries})`);
         await new Promise((resolve) => setTimeout(resolve, retryAfter * 1000));
         continue;
@@ -60,7 +69,7 @@ export class RevenueCatAPI {
 
       if (response.status >= 500 && attempt < retries) {
         console.error(`  ⚠️  Server error ${response.status}. Retrying... (attempt ${attempt}/${retries})`);
-        await new Promise((resolve) => setTimeout(resolve, 2000 * attempt));
+        await new Promise((resolve) => setTimeout(resolve, this.retryDelayMs * attempt));
         continue;
       }
 

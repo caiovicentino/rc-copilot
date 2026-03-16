@@ -15,6 +15,8 @@
     "what-if": "tsx src/cli.ts what-if",
     "test": "vitest run",
     "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage",
+    "eval": "vitest run evals/",
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
@@ -30,6 +32,7 @@
   "author": "Caio Vicentino",
   "license": "MIT",
   "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.9",
     "tsx": "^4.19.0",
     "typescript": "^5.6.0",
     "vitest": "^2.1.0"
