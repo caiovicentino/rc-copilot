@@ -3,6 +3,14 @@ import Navbar from "@/components/Navbar";
 
 const features = [
   {
+    title: "AI Copilot",
+    description:
+      "Ask your data anything — AI-powered chat that understands your subscription metrics. Get instant answers, executive summaries, and actionable recommendations grounded in real data.",
+    icon: "✨",
+    color: "bg-purple-500/20 text-purple-400",
+    href: "/copilot",
+  },
+  {
     title: "Anomaly Detection",
     description:
       "Automatically detects statistical anomalies in your subscription metrics using z-score analysis. Surfaces revenue drops, churn spikes, and conversion changes before they become problems.",
@@ -55,19 +63,25 @@ export default function Home() {
 
         {/* Feature Cards */}
         <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-24">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {features.map((feature) => (
-              <div
-                key={feature.title}
-                className="bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-slate-600 transition-colors"
-              >
-                <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-lg font-bold ${feature.color}`}>
-                  {feature.icon}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {features.map((feature) => {
+              const card = (
+                <div
+                  className={`bg-slate-800 border border-slate-700 rounded-xl p-6 hover:border-slate-600 transition-colors ${"href" in feature ? "cursor-pointer" : ""}`}
+                >
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center mb-4 text-lg font-bold ${feature.color}`}>
+                    {feature.icon}
+                  </div>
+                  <h3 className="text-lg font-semibold text-slate-100 mb-2">{feature.title}</h3>
+                  <p className="text-sm text-slate-400 leading-relaxed">{feature.description}</p>
                 </div>
-                <h3 className="text-lg font-semibold text-slate-100 mb-2">{feature.title}</h3>
-                <p className="text-sm text-slate-400 leading-relaxed">{feature.description}</p>
-              </div>
-            ))}
+              );
+              return "href" in feature && feature.href ? (
+                <Link key={feature.title} href={feature.href}>{card}</Link>
+              ) : (
+                <div key={feature.title}>{card}</div>
+              );
+            })}
           </div>
         </section>
 
