@@ -30,7 +30,7 @@ export default function Navbar() {
               <span>AI Copilot</span>
             </Link>
             <a
-              href="https://github.com/caio-vicentino"
+              href="https://github.com/caiovicentino/rc-copilot"
               target="_blank"
               rel="noopener noreferrer"
               className="text-sm text-slate-400 hover:text-slate-100 transition-colors"

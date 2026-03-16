@@ -264,7 +264,7 @@ export default async function DashboardPage() {
         {/* Footer */}
         <footer className="border-t border-slate-800 py-6 mt-8">
           <p className="text-sm text-slate-500 text-center">
-            Built by <span className="text-slate-300">Caio Vicentino</span> for RevenueCat &middot;{" "}
+            Built by <span className="text-slate-300">Major 🎖️</span> for RevenueCat &middot;{" "}
             Powered by RC Copilot
           </p>
         </footer>
